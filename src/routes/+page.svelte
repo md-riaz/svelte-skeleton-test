@@ -1,14 +1,15 @@
 <script>
-		import { setUserState } from '$lib/state.svelte';
+	import { variables } from '$lib/utils/constants';
 
-	const setUser = setUserState({name: 'mdriaz'})
+	import { setUserState } from '$lib/store/state.svelte';
+
+	const setUser = setUserState({ name: 'mdriaz' });
 
 	import { Tabs } from '@skeletonlabs/skeleton-svelte';
 
 	let group = $state('plane');
 	const lorem =
 		'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum veniam reprehenderit eum, reiciendis obcaecati, excepturi nemo ipsa fugit suscipit autem vitae numquam et cumque praesentium vero eos minus itaque. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum veniam reprehenderit eum, reiciendis obcaecati, excepturi nemo.';
-
 
 	let count = $state(0);
 
@@ -20,7 +21,7 @@
 <!-- Use a single column on small screens; show multiple columns at the medium breakpoit or wider -->
 <div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
 	<!-- Hide the sidebar on small screens; show at the medium breakpoint or wider -->
-	<aside class="hidden md:block">(sidebar)</aside>
+	<aside class="hidden md:block">(sidebar) - {variables.BASE_API_URI}</aside>
 	<!-- Remains visible at all breakpoints -->
 	<main>
 		<Tabs bind:value={group}>
@@ -36,12 +37,11 @@
 			{/snippet}
 		</Tabs>
 
-
 		<button onclick={increment}>
 			clicks: {count}
 		</button>
 
-        <a href="/about" class="btn btn-lg bg-lime-600">Go to About</a>
-        <a href="/chat" class="btn btn-lg bg-lime-600">Go to Chat</a>
+		<a href="/about" class="btn btn-lg bg-lime-600">Go to About</a>
+		<a href="/chat" class="btn btn-lg bg-lime-600">Go to Chat</a>
 	</main>
 </div>

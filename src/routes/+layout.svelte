@@ -1,16 +1,16 @@
 <script>
-	import { setUserState } from '$lib/state.svelte';
+	import { navigating } from '$app/stores';
+	import Loader from '$lib/components/loader.svelte';
+	import { loading } from '$lib/store/loadingStore';
+	import { setUserState } from '$lib/store/state.svelte';
 	import '../app.css';
 
-  const user = setUserState({name: 'mdriaz'});
+	const user = setUserState({ name: 'mdriaz' });
+
+	$: loading.setNavigate(!!$navigating);
+	$: loading.setLoading(!!$navigating, 'Loading, please wait...');
 </script>
 
-<!-- src/routes/+layout.svelte -->
-<nav class="bg-gray-800 text-white p-4">
-  <a href="/" class="text-xl font-bold">SvelteKit Chat - {user.name}</a>
-</nav>
+<Loader />
 
-<main class="p-4">
-  <slot></slot>
-</main>
-
+<slot></slot>

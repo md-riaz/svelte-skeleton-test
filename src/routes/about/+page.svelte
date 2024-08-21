@@ -1,5 +1,5 @@
 <script>
-	import { getUserState } from '$lib/state.svelte';
+	import { getUserState } from '$lib/store/state.svelte';
 
 	let user = getUserState();
 
