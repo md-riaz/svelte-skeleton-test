@@ -1,4 +1,8 @@
 <script>
+		import { setUserState } from '$lib/state.svelte';
+
+	const setUser = setUserState({name: 'mdriaz'})
+
 	import { Tabs } from '@skeletonlabs/skeleton-svelte';
 
 	let group = $state('plane');
@@ -37,6 +41,7 @@
 			clicks: {count}
 		</button>
 
-        <a href="/about" class="btn btn-lg bg-lime-600">Go to Chat</a>
+        <a href="/about" class="btn btn-lg bg-lime-600">Go to About</a>
+        <a href="/chat" class="btn btn-lg bg-lime-600">Go to Chat</a>
 	</main>
 </div>
