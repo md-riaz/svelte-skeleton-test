@@ -7,5 +7,5 @@ export const trailingSlash = 'always';
 export function load() {
     console.log('parent layout load ran');
     
-    return { a: 1 };
+    return { };
 }
