@@ -1,13 +1,14 @@
 <script>
-    /** @type {import('./$types').PageData} */
-    export let data;
+	/** @type {import('./$types').PageData} */
+	export let data;
 </script>
 
-<ul class="max-w-xs flex flex-col">
-    {#each data.items as item}
-           <li class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-neutral-900 dark:border-neutral-700 dark:text-white">
-    {item.title}
-  </li>
-    {/each}
-
+<ul class="flex max-w-xs flex-col">
+	{#each data.items as item}
+		<li
+			class="-mt-px inline-flex items-center gap-x-2 border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-800 first:mt-0 first:rounded-t-lg last:rounded-b-lg dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
+		>
+			{item.title}
+		</li>
+	{/each}
 </ul>

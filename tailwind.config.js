@@ -1,6 +1,6 @@
-
 import { skeleton } from '@skeletonlabs/skeleton/plugin';
 import * as themes from '@skeletonlabs/skeleton/themes';
+import forms from '@tailwindcss/forms';
 import { join } from 'path';
 
 /** @type {import('tailwindcss').Config} \*/
@@ -10,11 +10,12 @@ export default {
 		join(require.resolve('@skeletonlabs/skeleton-svelte'), '../**/*.{html,js,svelte,ts}')
 	],
 	theme: {
-		extend: {},
+		extend: {}
 	},
 	plugins: [
 		skeleton({
 			themes: [themes.cerberus, themes.rose]
-		})
+		}),
+		forms
 	]
-}
+};

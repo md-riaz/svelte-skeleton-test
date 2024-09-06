@@ -1,9 +1,7 @@
 /** @type {import('./$types').PageLoad} */
 
-export async function load({ parent })
-{
-    
-    await parent();
-    
-    return {};
+export async function load({ parent }) {
+	await parent();
+
+	return {};
 }
