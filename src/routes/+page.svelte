@@ -44,5 +44,6 @@
 		<a href="/about" class="btn btn-lg bg-lime-600">Go to About</a>
 		<a href="/chat" class="btn btn-lg bg-lime-600">Go to Chat</a>
 		<a href="/items" class="btn btn-lg bg-lime-600">Go to Items</a>
+		<a href="/auth/login" class="btn btn-lg bg-lime-600">Go to Login page</a>
 	</main>
 </div>

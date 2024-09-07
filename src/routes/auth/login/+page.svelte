@@ -1,28 +1,53 @@
 <script>
-	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { variables } from '$lib/utils/constants';
 
-	let email = '';
-	let password = '';
-	let isLoading = false;
+
+	let email = $state('');
+	let password = $state('');
+	let isLoading = $state(0);
 
 	async function signIn() {
-		isLoading = true;
+		isLoading = 1;
+
+        const formData = {
+            email: email,
+            password: password,
+            platform: navigator.userAgentData.platform
+        }
 
 		// Make the API request here
 		try {
 			// Perform the sign-in API request
 			// Replace the placeholder URL with your actual API endpoint
-			const response = await fetch('https://api.example.com/signin', {
+			const response = await fetch(variables.BASE_API_URI + '/user/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ email, password })
+				body: JSON.stringify(formData)
 			});
 
 			if (response.ok) {
 				// Sign-in successful
 				console.log('Sign-in successful');
+
+				const resp = await response.json();
+
+				if(resp.error != 0){
+					// throw error
+					throw Error(resp.msg);
+				}
+
+				resp.data.token = resp.token;
+				
+				console.log(resp.data);
+				
+				// need to use store for storing user data as context can't be used here
+
+				// Redirect to the dashboard
+				goto('/');
+
 			} else {
 				// Sign-in failed
 				console.error('Sign-in failed');
@@ -31,12 +56,10 @@
 			console.error('An error occurred during sign-in', error);
 		}
 
-		isLoading = false;
+		isLoading = 0;
 	}
 
-	onMount(() => {
-		// Code to run when the component is mounted
-	});
+	
 </script>
 
 <div class="flex min-h-screen items-center bg-gray-100 py-16 dark:bg-neutral-800">
@@ -60,20 +83,21 @@
 
 				<div class="mt-5">
 					<!-- Form -->
-					<form>
+					<form onsubmit={(e) => e.preventDefault}>
 						<div class="grid gap-y-4">
 							<!-- Form Group -->
 							<div>
 								<label for="email" class="mb-2 block text-sm dark:text-white">Email address</label>
 								<div class="relative">
-									<input
-										type="email"
-										id="email"
-										name="email"
-										class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-										required
-										aria-describedby="email-error"
-									/>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                        required
+                                        aria-describedby="email-error"
+                                        bind:value={email}
+                                    />
 									<div class="pointer-events-none absolute inset-y-0 end-0 hidden pe-3">
 										<svg
 											class="size-5 text-red-500"
@@ -101,12 +125,13 @@
 									<label for="password" class="mb-2 block text-sm dark:text-white">Password</label>
 									<a
 										class="inline-flex items-center gap-x-1 text-sm font-medium text-blue-600 decoration-2 hover:underline focus:underline focus:outline-none dark:text-blue-500"
-										href="../examples/html/recover-account.html">Forgot password?</a
+										href="./">Forgot password?</a
 									>
 								</div>
 								<div class="relative">
 									<input
 										type="password"
+                                        bind:value={password}
 										id="password"
 										name="password"
 										class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
@@ -153,7 +178,11 @@
 							<button
 								type="submit"
 								class="inline-flex w-full items-center justify-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-								>Sign in</button
+                                onclick={signIn}
+                                disabled={isLoading == 1}
+								>
+                                {isLoading ? 'Loading..' : 'Sign in'}
+                                </button
 							>
 						</div>
 					</form>
