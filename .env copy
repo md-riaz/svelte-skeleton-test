@@ -1,0 +1,2 @@
+VITE_BASE_API_URI_DEV=https://api.dev.ipbx.link
+VITE_BASE_API_URI_PROD=https://api.dev.ipbx.link
