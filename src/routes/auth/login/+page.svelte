@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { user } from '$lib/store/userState';
 	import { variables } from '$lib/utils/constants';
 
 
@@ -41,9 +42,8 @@
 
 				resp.data.token = resp.token;
 				
-				console.log(resp.data);
-				
 				// need to use store for storing user data as context can't be used here
+				user.set(resp.data);
 
 				// Redirect to the dashboard
 				goto('/');

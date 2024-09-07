@@ -6,6 +6,7 @@ export const trailingSlash = 'always';
 /** @type {import('./$types').LayoutLoad} */
 export function load() {
 	console.log('parent layout load ran');
+	
 
 	return {};
 }

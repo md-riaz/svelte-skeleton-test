@@ -1,9 +1,12 @@
 <script>
 	import { variables } from '$lib/utils/constants';
 
-	import { setUserState } from '$lib/store/state.svelte';
+	import { getUserState } from '$lib/store/state.svelte';
 
-	const setUser = setUserState({ name: 'mdriaz' });
+	const user = getUserState();
+
+	console.log('user', user);
+	
 
 	import { Tabs } from '@skeletonlabs/skeleton-svelte';
 
@@ -45,5 +48,11 @@
 		<a href="/chat" class="btn btn-lg bg-lime-600">Go to Chat</a>
 		<a href="/items" class="btn btn-lg bg-lime-600">Go to Items</a>
 		<a href="/auth/login" class="btn btn-lg bg-lime-600">Go to Login page</a>
+
+		{#if $user.user}
+			<p>Logged in as {$user.user.name}</p>
+		{:else}
+			<p>Not logged in</p>
+		{/if}
 	</main>
 </div>
