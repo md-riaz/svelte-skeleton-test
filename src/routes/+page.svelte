@@ -24,7 +24,9 @@
 <!-- Use a single column on small screens; show multiple columns at the medium breakpoit or wider -->
 <div class="grid grid-cols-1 md:grid-cols-[auto_1fr]">
 	<!-- Hide the sidebar on small screens; show at the medium breakpoint or wider -->
-	<aside class="hidden md:block">(sidebar) - {variables.BASE_API_URI}</aside>
+	<aside class="hidden md:block">
+		(sidebar) - {variables.BASE_API_URI}
+	</aside>
 	<!-- Remains visible at all breakpoints -->
 	<main>
 		<Tabs bind:value={group}>
