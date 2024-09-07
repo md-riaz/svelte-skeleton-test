@@ -1,21 +1,30 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/store/userState';
+	import Alert from '$lib/ui/alert/alert.svelte';
+	import SubmitButton from '$lib/ui/form/submitButton.svelte';
 	import { variables } from '$lib/utils/constants';
-
 
 	let email = $state('');
 	let password = $state('');
 	let isLoading = $state(0);
+	let errorMessage = $state('');
+	let showError = $derived(errorMessage.length > 0); 
+	
+	/**
+	 * @param {{ preventDefault: () => void; }} e
+	 * @throws Error
+	 */
+	async function signIn(e) {
+		e.preventDefault();
 
-	async function signIn() {
 		isLoading = 1;
 
-        const formData = {
-            email: email,
-            password: password,
-            platform: navigator.userAgentData.platform
-        }
+		const formData = {
+			email: email,
+			password: password,
+			platform: navigator.userAgentData.platform
+		};
 
 		// Make the API request here
 		try {
@@ -30,38 +39,37 @@
 			});
 
 			if (response.ok) {
-				// Sign-in successful
-				console.log('Sign-in successful');
 
 				const resp = await response.json();
 
-				if(resp.error != 0){
+				if (resp.error != 0) {
 					// throw error
-					throw Error(resp.msg);
+					throw new Error(resp.msg);
 				}
 
 				resp.data.token = resp.token;
-				
+
 				// need to use store for storing user data as context can't be used here
 				user.set(resp.data);
 
 				// Redirect to the dashboard
 				goto('/');
-
 			} else {
-				// Sign-in failed
-				console.error('Sign-in failed');
+				throw new Error('Sign-in failed');
 			}
 		} catch (error) {
-			console.error('An error occurred during sign-in', error);
+			
+			if (error instanceof Error) {
+				errorMessage = error.message;
+				console.log(errorMessage, errorMessage.length);
+				
+			}
 		}
 
 		isLoading = 0;
 	}
-
-	
 </script>
-
+{showError}
 <div class="flex min-h-screen items-center bg-gray-100 py-16 dark:bg-neutral-800">
 	<main class="mx-auto w-full max-w-md p-6">
 		<div
@@ -81,23 +89,27 @@
 					</p>
 				</div>
 
+				{#if showError}
+					 <Alert msg={errorMessage} show={showError} />
+				{/if}
+
 				<div class="mt-5">
 					<!-- Form -->
-					<form onsubmit={(e) => e.preventDefault}>
+					<form onsubmit={signIn}>
 						<div class="grid gap-y-4">
 							<!-- Form Group -->
 							<div>
 								<label for="email" class="mb-2 block text-sm dark:text-white">Email address</label>
 								<div class="relative">
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                        required
-                                        aria-describedby="email-error"
-                                        bind:value={email}
-                                    />
+									<input
+										type="email"
+										id="email"
+										name="email"
+										class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+										required
+										aria-describedby="email-error"
+										bind:value={email}
+									/>
 									<div class="pointer-events-none absolute inset-y-0 end-0 hidden pe-3">
 										<svg
 											class="size-5 text-red-500"
@@ -131,7 +143,7 @@
 								<div class="relative">
 									<input
 										type="password"
-                                        bind:value={password}
+										bind:value={password}
 										id="password"
 										name="password"
 										class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
@@ -159,31 +171,8 @@
 							</div>
 							<!-- End Form Group -->
 
-							<!-- Checkbox -->
-							<div class="flex items-center">
-								<div class="flex">
-									<input
-										id="remember-me"
-										name="remember-me"
-										type="checkbox"
-										class="mt-0.5 shrink-0 rounded border-gray-200 text-blue-600 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-800 dark:checked:border-blue-500 dark:checked:bg-blue-500 dark:focus:ring-offset-gray-800"
-									/>
-								</div>
-								<div class="ms-3">
-									<label for="remember-me" class="text-sm dark:text-white">Remember me</label>
-								</div>
-							</div>
-							<!-- End Checkbox -->
+							<SubmitButton loading={isLoading} defaultText="Sign in"/>
 
-							<button
-								type="submit"
-								class="inline-flex w-full items-center justify-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                onclick={signIn}
-                                disabled={isLoading == 1}
-								>
-                                {isLoading ? 'Loading..' : 'Sign in'}
-                                </button
-							>
 						</div>
 					</form>
 					<!-- End Form -->
