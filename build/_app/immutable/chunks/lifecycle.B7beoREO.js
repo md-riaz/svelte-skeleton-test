@@ -1,0 +1,1 @@
+import{x as r,y as e,z as c,A as a,B as i,C as u,u as l,D as _}from"./runtime.DKKVhXn3.js";function m(){const s=c,n=s.l.u;n&&(n.b.length&&r(()=>{f(s),a(n.b)}),e(()=>{const o=i(()=>n.m.map(u));return()=>{for(const t of o)typeof t=="function"&&t()}}),n.a.length&&e(()=>{f(s),a(n.a)}))}function f(s){if(s.l.s)for(const n of s.l.s)l(n);_(s.s)}export{m as i};

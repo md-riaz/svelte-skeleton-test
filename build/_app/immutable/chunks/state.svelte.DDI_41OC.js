@@ -1,0 +1,1 @@
+import{p as o}from"./proxy.BrcP2CTM.js";import{n as s,o as n}from"./runtime.DKKVhXn3.js";const e="USER_CTX";function i(r={name:"mdriaz"}){const t=o(r);return s(e,t),t}function p(){return n(e)}export{p as g,i as s};
