@@ -1,5 +1,6 @@
-const BASE_API_URI = import.meta.env.DEV
-	? import.meta.env.VITE_BASE_API_URI_DEV
-	: import.meta.env.VITE_BASE_API_URI_PROD;
 
-export const variables = { BASE_API_URI: BASE_API_URI };
+export const variables = {
+    APP_NAME: 'IPBX SMS',
+    BASE_API_URI: 'https://api.dev.ipbx.link'
+
+};

@@ -1,15 +1,28 @@
 <script>
+	import { getContext } from 'svelte';
+	
+	export const toast = getContext('toast');
+
 	import { goto } from '$app/navigation';
+	import { saveUserData } from '$lib/db';
 	import { user } from '$lib/store/userState';
-	import Alert from '$lib/ui/alert/alert.svelte';
 	import SubmitButton from '$lib/ui/form/submitButton.svelte';
 	import { variables } from '$lib/utils/constants';
 
 	let email = $state('');
 	let password = $state('');
 	let isLoading = $state(0);
-	let errorMessage = $state('');
-	let showError = $derived(errorMessage.length > 0); 
+
+	/**
+	 * @param {string} [msg]
+	 */
+	function triggerError(msg) {
+		toast.create({
+			title: 'Error',
+			description: msg,
+			type: 'error'
+		});
+	}
 	
 	/**
 	 * @param {{ preventDefault: () => void; }} e
@@ -23,7 +36,7 @@
 		const formData = {
 			email: email,
 			password: password,
-			platform: navigator.userAgentData.platform
+			platform: navigator.platform || 'unknown'
 		};
 
 		// Make the API request here
@@ -51,6 +64,7 @@
 
 				// need to use store for storing user data as context can't be used here
 				user.set(resp.data);
+				saveUserData(resp.data);
 
 				// Redirect to the dashboard
 				goto('/');
@@ -60,8 +74,8 @@
 		} catch (error) {
 			
 			if (error instanceof Error) {
-				errorMessage = error.message;
-				console.log(errorMessage, errorMessage.length);
+
+				triggerError(error.message);
 				
 			}
 		}
@@ -69,7 +83,7 @@
 		isLoading = 0;
 	}
 </script>
-{showError}
+
 <div class="flex min-h-screen items-center bg-gray-100 py-16 dark:bg-neutral-800">
 	<main class="mx-auto w-full max-w-md p-6">
 		<div
@@ -88,10 +102,6 @@
 						</a>
 					</p>
 				</div>
-
-				{#if showError}
-					 <Alert msg={errorMessage} show={showError} />
-				{/if}
 
 				<div class="mt-5">
 					<!-- Form -->

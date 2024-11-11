@@ -1,10 +1,11 @@
 <!-- src/routes/chat/+page.svelte -->
 <script>
-	export let chats = [
+	/** @type {{chats?: any}} */
+	let { chats = [
 		{ id: 1, name: 'Chat with Alice', lastMessage: 'Hey, how are you?' },
 		{ id: 2, name: 'Chat with Bob', lastMessage: 'Let’s catch up later.' },
 		{ id: 3, name: 'Chat with Charlie', lastMessage: 'Got the files?' }
-	];
+	] } = $props();
 </script>
 
 <h1 class="mb-4 text-2xl font-bold">Chats</h1>

@@ -5,7 +5,7 @@ const USER_CTX = 'USER_CTX';
 /**
  * @param {any} initialData
  */
-export function setUserState(initialData = { name: 'mdriaz' }) {
+export function setUserState(initialData = { }) {
 	const userState = $state(initialData);
 	setContext(USER_CTX, userState);
 

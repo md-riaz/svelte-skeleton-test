@@ -1,12 +1,12 @@
 <!-- src/routes/chat/[id]/+page.svelte -->
 <script>
-	export let chatId;
-	export let messages = [
+	/** @type {{chatId: any, messages?: any}} */
+	let { chatId, messages = $bindable([
 		{ sender: 'Alice', content: 'Hey, how are you?' },
 		{ sender: 'You', content: 'I’m good, thanks!' },
 		{ sender: 'Alice', content: 'What’s up?' }
-	];
-	let newMessage = '';
+	]) } = $props();
+	let newMessage = $state('');
 
 	function sendMessage() {
 		if (newMessage.trim()) {
@@ -34,5 +34,5 @@
 		placeholder="Type a message"
 		class="flex-1 rounded-lg border border-gray-300 p-2"
 	/>
-	<button on:click={sendMessage} class="ml-2 rounded-lg bg-blue-500 p-2 text-white"> Send </button>
+	<button onclick={sendMessage} class="ml-2 rounded-lg bg-blue-500 p-2 text-white"> Send </button>
 </div>

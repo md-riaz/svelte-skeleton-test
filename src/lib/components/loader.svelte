@@ -1,13 +1,16 @@
 <script>
+	
 	import { loading } from '$lib/store/loadingStore';
 
-	$: if ($loading.status === 'NAVIGATING') {
-		setTimeout(() => {
-			if ($loading.status === 'NAVIGATING') {
-				$loading.status = 'LOADING';
-			}
-		}, 100);
-	}
+	$effect(() => {
+		if ($loading.status === 'NAVIGATING') {
+			setTimeout(() => {
+				if ($loading.status === 'NAVIGATING') {
+					$loading.status = 'LOADING';
+				}
+			}, 100);
+		}
+	});
 </script>
 
 {#if $loading.status === 'LOADING'}

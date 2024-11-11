@@ -1,6 +1,7 @@
 <script>
-	/** @type {import('./$types').PageData} */
-	export let data;
+	
+	/** @type {{data: import('./$types').PageData}} */
+	let { data } = $props();
 </script>
 
 <ul class="flex max-w-xs flex-col">
