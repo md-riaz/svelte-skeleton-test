@@ -8,7 +8,7 @@ class ProjectDB extends Dexie {
         super(variables.APP_NAME.replace(/\s+/g, '_'));
         this.version(1).stores({
             // Define user table with the specified fields as keys
-            user: 'auth_token, country_codes, info, services, settings'
+            user: ''
         });
 
         this.user = this.table('user'); // Initialize the user table
@@ -23,6 +23,7 @@ export const db = new ProjectDB();
  * @returns {Promise<void>}
  * @param {{ user: { id: any; name: any; email: any; notification: any; owner_id: any; owner_type: any; phone: any; services: any; settings: any; }; token: any; country_codes: any; }} userData
  */
+//TODO: seperate each data put with seperate key
 export async function saveUserData(userData) {
     await db.user.put({
         'id': userData.user.id,
