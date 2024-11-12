@@ -1,4 +1,5 @@
 <script lang="ts">
+
 	import { page } from '$app/stores';
 
 	import { navigating } from '$app/stores';
@@ -11,10 +12,9 @@
 	import '../app.css';
 
 	/** @type {{children?: import('svelte').Snippet}} */
-	let { children } = $props();
+	let { children, data } = $props();
 
-
-	setUserState({});
+	setUserState(data.userInfo);
 
 	$effect(() => {
 		loading.setNavigate(!!$navigating);
