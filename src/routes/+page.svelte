@@ -64,8 +64,8 @@
 		<a href="/items" class="btn btn-lg bg-lime-600">Go to Items</a>
 		<a href="/auth/login" class="btn btn-lg bg-lime-600">Go to Login page</a>
 
-		{#if $user.user}
-			<p>Logged in as {$user.user.name}</p>
+		{#if user}
+			<p>Logged in as {user.info?.name}</p>
 		{:else}
 			<p>Not logged in</p>
 		{/if}
