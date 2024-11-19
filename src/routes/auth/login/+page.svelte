@@ -4,8 +4,8 @@
 	export const toast = getContext('toast');
 
 	import { goto } from '$app/navigation';
-	import { saveUserData } from '$lib/db';
-	import { user } from '$lib/store/userState';
+	import { db, saveUserData } from '$lib/db';
+	import { user } from '$lib/store/userState.svelte';
 	import SubmitButton from '$lib/ui/form/submitButton.svelte';
 	import { variables } from '$lib/utils/constants';
 
@@ -63,11 +63,16 @@
 				resp.data.token = resp.token;
 
 				// need to use store for storing user data as context can't be used here
-				user.set(resp.data);
-				saveUserData(resp.data);
+				
+				await saveUserData(resp.data);
+
+				user.auth_token = await db.user.get('auth_token');
+				user.services = JSON.parse(await db.user.get('services'));
+				user.settings = JSON.parse(await db.user.get('settings'));
+				user.info = JSON.parse(await db.user.get('info'));
 
 				// Redirect to the dashboard
-				goto('/');
+				goto('/dashboard');
 			} else {
 				throw new Error('Sign-in failed');
 			}

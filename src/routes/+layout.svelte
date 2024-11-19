@@ -4,7 +4,6 @@
 	import { navigating } from '$app/stores';
 	import Loader from '$lib/components/loader.svelte';
 	import { loading } from '$lib/store/loadingStore';
-	import { setUserState } from '$lib/store/state.svelte';
 
 	import { variables } from '$lib/utils/constants';
 	import { ToastProvider } from '@skeletonlabs/skeleton-svelte';
@@ -12,9 +11,7 @@
 	import '../app.css';
 
 	/** @type {{children?: import('svelte').Snippet}} */
-	let { children, data } = $props();
-
-	setUserState(data.userInfo);
+	let { children } = $props();
 
 	$effect(() => {
 		loading.setNavigate(!!$navigating);
@@ -25,24 +22,27 @@
 		if ('serviceWorker' in navigator) {
 			// Service worker supported
 
-			const status = await Notification.requestPermission();
+			// check if the notification permission already exists
+			if (Notification.permission == 'granted') {
+				const status = await Notification.requestPermission();
 
-			if (status !== 'granted') {
-				alert('Please allow notifications to make sure that the application works.');
-			}
+				if (status !== 'granted') {
+					alert('Please allow notifications to make sure that the application works.');
+				}
 
-			const reg = await navigator.serviceWorker.ready;
-			let sub = await reg.pushManager.getSubscription();
-			if (!sub) {
-				const strAppPublicKey =
-					'BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo';
-				
-				sub = await reg.pushManager.subscribe({
-					userVisibleOnly: true,
-					applicationServerKey: strAppPublicKey
-				});
+				const reg = await navigator.serviceWorker.ready;
+				let sub = await reg.pushManager.getSubscription();
+				if (!sub) {
+					const strAppPublicKey =
+						'BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo';
+
+					sub = await reg.pushManager.subscribe({
+						userVisibleOnly: true,
+						applicationServerKey: strAppPublicKey
+					});
+				}
+				console.log(sub);
 			}
-			console.log(sub);
 		}
 		// ...
 	});

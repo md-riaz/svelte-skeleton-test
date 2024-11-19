@@ -1,9 +1,10 @@
 <script>
+	import { user } from '$lib/store/userState.svelte';
 	import { variables } from '$lib/utils/constants';
 
-	import { getUserState } from '$lib/store/state.svelte';
 
-	const user = getUserState();
+	console.log(user);
+	
 
 	import { Tabs } from '@skeletonlabs/skeleton-svelte';
 
@@ -50,7 +51,7 @@
 		<a href="/auth/login" class="btn btn-lg bg-lime-600">Go to Login page</a>
 
 		{#if user}
-			<p>Logged in as {user.name}</p>
+			<p>Logged in as {user.info.name}</p>
 		{:else}
 			<p>Not logged in</p>
 		{/if}
