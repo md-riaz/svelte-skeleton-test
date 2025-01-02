@@ -1,15 +1,13 @@
 <script>
 	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 	import { db } from '$lib/db';
 
 	// implement logout like clearing dexie db and navigating to /auth/login if db exists
-	if (db.isOpen()) {
-		db.close();
-		db.delete();
-	}
+	db.delete({disableAutoOpen: false});
 
 	// navigate to /auth/login
 	if (browser) {
-		window.location.href = '/auth/login';
+		goto('/auth/login');
 	}
 </script>

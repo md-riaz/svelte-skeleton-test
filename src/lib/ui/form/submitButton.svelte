@@ -11,7 +11,7 @@
 >
 	{#if loading}
 		<!-- content here -->
-		<LoaderCircle /> Processing...
+		<LoaderCircle class="animate-spin" /> Processing...
 	{:else}
 		<!-- else content here -->
 		{defaultText}
