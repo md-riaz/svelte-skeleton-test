@@ -32,9 +32,13 @@
 	let navigationLinks = [
 		{ label: 'Home', active: true },
 		{ label: 'Contacts', active: false },
-		{ label: 'Calendar', active: false },
-		{ label: 'Projects', active: false },
-		{ label: 'Tasks', active: false }
+		{ label: 'Messages', active: false },
+		{ label: 'eFax', active: false },
+		{ label: 'Users', active: false },
+		{ label: 'Departments', active: false },
+		{ label: 'Call History', active: false },
+		{ label: 'Extensions', active: false },
+		{ label: 'Reports', active: false },
 	];
 
 	function handleCallClick() {
@@ -214,7 +218,9 @@
 					onclick={() => (activeDropdown = activeDropdown === 'profile' ? null : 'profile')}
 					class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 hover:bg-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600"
 				>
-					<span class="text-sm font-medium text-blue-600 dark:text-blue-300">MD</span>
+					<span class="text-sm font-medium text-blue-600 dark:text-blue-300">
+						{user.info.name.split(' ').length > 1 ? user.info.name.split(' ')[0].charAt(0) + user.info.name.split(' ')[1].charAt(0) : user.info.name.charAt(0)}
+					</span>
 				</button>
 
 				{#if activeDropdown === 'profile'}
@@ -228,14 +234,16 @@
 									<div
 										class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-700"
 									>
-										<span class="font-medium text-blue-600 dark:text-blue-300">MD</span>
+										<span class="font-medium text-blue-600 dark:text-blue-300">
+											{user.info.name.split(' ').length > 1 ? user.info.name.split(' ')[0].charAt(0) + user.info.name.split(' ')[1].charAt(0) : user.info.name.charAt(0)}
+										</span>
 									</div>
 								</div>
 								<div>
 									<div class="font-medium text-gray-900 dark:text-white">
-										MD RIAZ {user.info.name}
+										{user.info.name}
 									</div>
-									<div class="text-sm text-gray-500 dark:text-gray-400">md.riaz@example.com</div>
+									<div class="text-sm text-gray-500 dark:text-gray-400">{user.info.email}</div>
 								</div>
 							</div>
 						</div>

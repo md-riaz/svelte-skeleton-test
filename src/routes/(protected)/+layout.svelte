@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { user } from '$lib/store/userState.svelte.js';
-
 
 
 	/** @type {{children?: import('svelte').Snippet}} */
@@ -11,8 +11,9 @@
 		user.services = data.userInfo.services;
 		user.settings = data.userInfo.settings;
 		user.info = data.userInfo.info;
+	} else {
+		goto('/auth/login');
 	}
-
 </script>
 
 {@render children()}
