@@ -38,7 +38,7 @@
 		{ label: 'Departments', active: false },
 		{ label: 'Call History', active: false },
 		{ label: 'Extensions', active: false },
-		{ label: 'Reports', active: false },
+		{ label: 'Reports', active: false }
 	];
 
 	function handleCallClick() {
@@ -219,7 +219,11 @@
 					class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 hover:bg-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600"
 				>
 					<span class="text-sm font-medium text-blue-600 dark:text-blue-300">
-						{user.info.name.split(' ').length > 1 ? user.info.name.split(' ')[0].charAt(0) + user.info.name.split(' ')[1].charAt(0) : user.info.name.charAt(0)}
+						{user?.info?.name
+							? user.info.name.split(' ').length > 1
+								? user.info.name.split(' ')[0].charAt(0) + user.info.name.split(' ')[1].charAt(0)
+								: user.info.name.charAt(0)
+							: ''}
 					</span>
 				</button>
 
@@ -235,7 +239,12 @@
 										class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-700"
 									>
 										<span class="font-medium text-blue-600 dark:text-blue-300">
-											{user.info.name.split(' ').length > 1 ? user.info.name.split(' ')[0].charAt(0) + user.info.name.split(' ')[1].charAt(0) : user.info.name.charAt(0)}
+											{user?.info?.name
+												? user.info.name.split(' ').length > 1
+													? user.info.name.split(' ')[0].charAt(0) +
+														user.info.name.split(' ')[1].charAt(0)
+													: user.info.name.charAt(0)
+												: ''}
 										</span>
 									</div>
 								</div>
