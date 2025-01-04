@@ -1,9 +1,11 @@
 <script>
 	import { user } from '$lib/store/userState.svelte';
+	import { fetchDashboardData } from '$lib/utils/api';
 	import { onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 
 	// Reactive state using Svelte 5 runes
+	let pageData = $state({});
 	let activeDropdown = $state(/** @type {string | null} */ (null));
 	let phoneNumber = $state('+1 (352)');
 	let showDialer = $state(false);
@@ -54,8 +56,19 @@
 		showCallingDropdown = false;
 	}
 
+	async function dashboardData() {
+		let response = await fetchDashboardData();
+		console.log('Dashboard data:', response);
+
+		if (response.error === 0) {
+			pageData = response.data;
+		}
+	}
+
 	// Close dropdowns when clicking outside
 	onMount(() => {
+		dashboardData();
+
 		// @ts-ignore
 		const handleClickOutside = (event) => {
 			if (!event.target.closest('.dropdown-container')) {
