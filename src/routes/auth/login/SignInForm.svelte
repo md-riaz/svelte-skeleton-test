@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import { goto } from '$app/navigation';
 	import InputField from '$lib/components/forms/InputField.svelte';
 	import PasswordField from '$lib/components/forms/PasswordField.svelte';
@@ -9,13 +9,16 @@
 	import { triggerError } from '$lib/utils/errorHandler';
 	import { getContext } from 'svelte';
 
-	let email = $state('');
-	let password = $state('');
+	let email = $state('mashikur@gmail.com');
+	let password = $state('adminadmin');
 	let isLoading = $state(0);
 
 	let toastContext = getContext('toast');
 
-	async function handleSubmit(e: Event) {
+	/**
+	 * @param {{ preventDefault: () => void; }} e
+	 */
+	async function handleSubmit(e) {
 		e.preventDefault();
 		isLoading = 1;
 
@@ -67,7 +70,7 @@
 	}
 </script>
 
-<form onsubmit={handleSubmit}>
+<form onsubmit={handleSubmit} >
 	<div class="grid gap-y-4">
 		<!-- Form Group -->
 		<InputField id="email" type="email" label="Email" bind:value={email} required />

@@ -1,7 +1,5 @@
-<script lang="ts">
-	import { page } from '$app/stores';
-
-	import { navigating } from '$app/stores';
+<script>
+	
 	import Loader from '$lib/components/loader.svelte';
 	import { loading } from '$lib/store/loadingStore';
 
@@ -9,13 +7,17 @@
 	import { ToastProvider } from '@skeletonlabs/skeleton-svelte';
 	import { onMount } from 'svelte';
 	import '../app.css';
+	
+	import { navigating, page } from '$app/state';
+	import { pnSaveSubscription } from '$lib/utils/api';
 
 	/** @type {{children?: import('svelte').Snippet}} */
 	let { children } = $props();
 
 	$effect(() => {
-		loading.setNavigate(!!$navigating);
-		loading.setLoading(!!$navigating, 'Loading, please wait...');
+		$inspect(navigating);
+		loading.setNavigate(!!navigating.to);
+		loading.setLoading(!!navigating.to, 'Loading, please wait...');
 	});
 
 	onMount(async () => {
@@ -42,6 +44,9 @@
 					});
 				}
 				console.log(sub);
+
+				// send the subscription to the server
+				pnSaveSubscription(sub);
 			}
 		}
 		// ...
@@ -50,8 +55,8 @@
 
 <svelte:head>
 	<title>
-		{$page?.url?.pathname != '/'
-			? `${$page?.url?.pathname
+		{page?.url?.pathname != '/'
+			? `${page?.url?.pathname
 					?.slice(1)
 					.split('/')
 					.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -63,5 +68,7 @@
 <Loader />
 
 <ToastProvider placement="top-end">
-	{@render children()}
+	{#if children}
+		{@render children()}
+	{/if}
 </ToastProvider>

@@ -1,5 +1,6 @@
+import { goto } from '$app/navigation';
 import { user } from '$lib/store/user.svelte';
-import { variables } from './constants';
+import { API_ENDPOINTS, variables } from './constants';
 
 /**
  * @param {{ email: string; password: string; }} formData
@@ -11,7 +12,12 @@ import { variables } from './constants';
  * @returns {Promise<{ error: number; msg: string; data: any; token: string; }>} - A promise that resolves to the JSON response from the API, including the auth_token.
  */
 export async function signIn(formData) {
-    return request('/user/login', 'POST', formData);
+    return request(API_ENDPOINTS.LOGIN, 'POST', formData);
+}
+
+// sign out the user
+export async function signOut() { 
+    return request(API_ENDPOINTS.LOGOUT, 'POST');
 }
 
 /**
@@ -22,7 +28,7 @@ export async function signIn(formData) {
  */
 export async function fetchUserPolicies() {
 
-    return request('/user/policies', 'GET');
+    return request(API_ENDPOINTS.POLICIES, 'GET');
 }
 
 /**
@@ -34,7 +40,7 @@ export async function fetchUserPolicies() {
  * @throws {Error} - Throws an error if the response is not ok.
  */
 export async function fetchDashboardData() {
-    return request('/dashboard', 'GET');
+    return request(API_ENDPOINTS.DASHBOARD, 'GET');
 }
 
 
@@ -90,8 +96,8 @@ async function request(endpoint, method = 'GET', data = {}, headers = {}) {
         return jsonResponse;
     } else if (jsonResponse.error == 405) {
         // Unauthorized
-        // user.setAuthToken(null);
-        // goto('/auth/login');
+        user.setAuthToken(null);
+        goto('/auth/login');
     } else {
         throw new Error(jsonResponse.msg);
     }
@@ -99,3 +105,32 @@ async function request(endpoint, method = 'GET', data = {}, headers = {}) {
     return {};
 }
 
+/**
+ * Saves a push notification subscription to the server.
+ *
+ * @param {PushSubscription} sub - The push subscription object.
+ * @returns {Promise<{ error: number; msg: string; data: any; }>} - A promise that resolves to the JSON response from the API.
+ * @throws {Error} - Throws an error if the request fails.
+ */
+
+export async function pnSaveSubscription(sub) {
+    try {
+        // Clone the subscription object and add additional properties
+        const body = {
+            ...JSON.parse(JSON.stringify(sub)),
+            userAgent: navigator.userAgent,
+            platform: navigator.platform ?? ''
+        };
+
+        const response = await request(API_ENDPOINTS.ADD_PUSH_SUBSCRIPTION, 'POST', body);
+
+        if (response.error !== 0) {
+            throw new Error(response.msg);
+        }
+
+        return response;
+    } catch (error) {
+        console.error('Error saving subscription:', error);
+        throw error; // Propagate the error to the calling code if needed
+    }
+}
