@@ -3,8 +3,8 @@
 	import InputField from '$lib/components/forms/InputField.svelte';
 	import PasswordField from '$lib/components/forms/PasswordField.svelte';
 	import SubmitButton from '$lib/components/forms/SubmitButton.svelte';
-	import { db, saveUserData, saveUserPolicies } from '$lib/db';
-	import { user } from '$lib/store/userState.svelte';
+	import { user } from '$lib/store/user.svelte';
+
 	import { fetchUserPolicies, signIn } from '$lib/utils/api';
 	import { triggerError } from '$lib/utils/errorHandler';
 	import { getContext } from 'svelte';
@@ -29,25 +29,28 @@
 				throw new Error(resp.msg);
 			}
 
-			resp.data.token = resp.token;
+			const respUser = resp.data.user;
 
-			// need to use store for storing user data as context can't be used here
-			await saveUserData(resp.data);
-
-			user.auth_token = await db.user.get('auth_token');
-			user.services = JSON.parse(await db.user.get('services'));
-			user.settings = JSON.parse(await db.user.get('settings'));
-			user.info = JSON.parse(await db.user.get('info'));
+			// Save user data to the store
+			await user.setAuthToken(resp.token);
+			await user.setServices(resp.data.services);
+			await user.setSettings(resp.data.settings);
+			await user.setInfo({
+				name: respUser.name,
+				email: respUser.email,
+				notification: respUser.notification,
+				owner_id: respUser.owner_id,
+				owner_type: respUser.owner_type,
+				phone: respUser.phone
+			});
 
 			// Fetch user policies and save to db
 			if (user.auth_token) {
-
 				const policiesData = await fetchUserPolicies();
 				console.log('Policies data:', policiesData);
 
-				await saveUserPolicies(policiesData.data);
-
-				user.policies = policiesData.data;
+				await user.setPolicies(policiesData.data);
+				
 			} else {
 				throw new Error('User authentication token is missing');
 			}

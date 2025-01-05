@@ -1,5 +1,7 @@
 <script>
-	import { user } from '$lib/store/userState.svelte';
+	import { user } from '$lib/store/user.svelte';
+
+
 	import { fetchDashboardData } from '$lib/utils/api';
 	import { onMount } from 'svelte';
 	import { fade, slide } from 'svelte/transition';

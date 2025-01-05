@@ -1,5 +1,5 @@
 import { goto } from '$app/navigation';
-import { db } from "$lib/db";
+import { user } from '$lib/store/user.svelte';
 
 export const ssr = false;
 export const csr = true;
@@ -7,22 +7,16 @@ export const prerender = false;
 export const trailingSlash = 'always';
 
 export async function load() {
-	const userInfo = {};
 
-	// Fetch auth token from the database
-	const authToken = await db.user.get('auth_token');
+	await user.init();
 
-	if (!authToken) {
+	if (!user.auth_token) {
 		goto('auth/login');
 		return;
 	}
 
-	userInfo.auth_token = authToken;
-	userInfo.services = JSON.parse(await db.user.get('services') || '{}');
-	userInfo.settings = JSON.parse(await db.user.get('settings') || '{}');
-	userInfo.info = JSON.parse(await db.user.get('info') || '{}');
+	console.log(user);
+	
 
-	return {
-		userInfo
-	};
+	return { user};
 }

@@ -1,4 +1,4 @@
-import { user } from '$lib/store/userState.svelte';
+import { user } from '$lib/store/user.svelte';
 import { variables } from './constants';
 
 /**
@@ -21,8 +21,7 @@ export async function signIn(formData) {
  * containing the user's policies.
  */
 export async function fetchUserPolicies() {
-    console.log('fetching user policies', user.auth_token);
-    
+
     return request('/user/policies', 'GET');
 }
 
@@ -56,7 +55,7 @@ async function request(endpoint, method = 'GET', data = {}, headers = {}) {
     /** @type {Object.<string, string>} */
     const defaultHeaders = { 'Content-Type': 'application/json' };
 
-    if (user.auth_token) {        
+    if (user.auth_token) {
         headers['Authorization'] = `Bearer ${user.auth_token}`;
     }
 
@@ -80,6 +79,23 @@ async function request(endpoint, method = 'GET', data = {}, headers = {}) {
     }
 
     const jsonResponse = await response.json();
-    return jsonResponse;
+
+    console.log(
+        `API request to ${url.toString()} with method ${method} returned:`,
+        jsonResponse
+    );
+    
+
+    if (jsonResponse.error == 0) {
+        return jsonResponse;
+    } else if (jsonResponse.error == 405) {
+        // Unauthorized
+        // user.setAuthToken(null);
+        // goto('/auth/login');
+    } else {
+        throw new Error(jsonResponse.msg);
+    }
+
+    return {};
 }
 
