@@ -21,6 +21,8 @@ export async function signIn(formData) {
  * containing the user's policies.
  */
 export async function fetchUserPolicies() {
+    console.log('fetching user policies', user.auth_token);
+    
     return request('/user/policies', 'GET');
 }
 
@@ -44,19 +46,21 @@ export async function fetchDashboardData() {
  * @param {string} endpoint - The API endpoint to send the request to.
  * @param {string} method - The HTTP method to use for the request (GET, POST, etc.).
  * @param {Object} [data={}] - The data to send with the request.
- 
+ * @param {Object.<string, string>} [headers={}] - The headers to send with the request.
  * @throws {Error} - Throws an error if the response is not ok.
  */
-async function request(endpoint, method = 'GET', data = {}) {
+async function request(endpoint, method = 'GET', data = {}, headers = {}) {
     const url = new URL(`${variables.BASE_API_URI}${endpoint}`);
     url.searchParams.append('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
 
     /** @type {Object.<string, string>} */
-    const headers = { 'Content-Type': 'application/json' };
+    const defaultHeaders = { 'Content-Type': 'application/json' };
 
-    if (user.auth_token) {
+    if (user.auth_token) {        
         headers['Authorization'] = `Bearer ${user.auth_token}`;
     }
+
+    headers = { ...defaultHeaders, ...headers };
 
     /** @type {{ method: string; headers: { [x: string]: string }; body?: string }} */
     const options = {

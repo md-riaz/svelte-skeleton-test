@@ -41,5 +41,14 @@ export async function saveUserData(userData) {
         phone: userData.user.phone
     }), 'info');
 
-    await db.userpolicies.put(JSON.stringify(userData.policies), 'policies'); // Save policies to userpolicies table
+}
+
+
+/**
+ * @param {Object} policies
+ */
+export async function saveUserPolicies(policies) {
+    console.log(policies);
+    
+    await db.userpolicies.put(JSON.stringify(policies), 'policies');
 }

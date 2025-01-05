@@ -3,7 +3,7 @@
 	import InputField from '$lib/components/forms/InputField.svelte';
 	import PasswordField from '$lib/components/forms/PasswordField.svelte';
 	import SubmitButton from '$lib/components/forms/SubmitButton.svelte';
-	import { db, saveUserData } from '$lib/db';
+	import { db, saveUserData, saveUserPolicies } from '$lib/db';
 	import { user } from '$lib/store/userState.svelte';
 	import { fetchUserPolicies, signIn } from '$lib/utils/api';
 	import { triggerError } from '$lib/utils/errorHandler';
@@ -41,14 +41,17 @@
 
 			// Fetch user policies and save to db
 			if (user.auth_token) {
-				const policiesData = await fetchUserPolicies();
-				await db.user.put({ key: 'policies', value: JSON.stringify(policiesData) });
 
-				user.policies = policiesData;
+				const policiesData = await fetchUserPolicies();
+				console.log('Policies data:', policiesData);
+
+				await saveUserPolicies(policiesData.data);
+
+				user.policies = policiesData.data;
 			} else {
 				throw new Error('User authentication token is missing');
 			}
-			
+
 			// Redirect to the dashboard
 			goto('/');
 		} catch (error) {
