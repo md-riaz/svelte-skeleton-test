@@ -11,6 +11,12 @@ importers:
       '@layerstack/utils':
         specifier: ^0.0.7
         version: 0.0.7
+      d3-array:
+        specifier: ^3.2.4
+        version: 3.2.4
+      d3-scale:
+        specifier: ^4.0.2
+        version: 4.0.2
       dexie:
         specifier: ^4.0.10
         version: 4.0.10

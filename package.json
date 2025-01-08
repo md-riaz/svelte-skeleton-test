@@ -43,6 +43,8 @@
 	"type": "module",
 	"dependencies": {
 		"@layerstack/utils": "^0.0.7",
+		"d3-array": "^3.2.4",
+		"d3-scale": "^4.0.2",
 		"dexie": "^4.0.10",
 		"layerchart": "^0.60.3"
 	}
