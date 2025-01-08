@@ -42,6 +42,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"dexie": "^4.0.10"
+		"@layerstack/utils": "^0.0.7",
+		"dexie": "^4.0.10",
+		"layerchart": "^0.60.3"
 	}
 }

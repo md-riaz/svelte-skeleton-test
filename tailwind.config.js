@@ -7,7 +7,8 @@ import { join } from 'path';
 export default {
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
-		join(require.resolve('@skeletonlabs/skeleton-svelte'), '../**/*.{html,js,svelte,ts}')
+		join(require.resolve('@skeletonlabs/skeleton-svelte'), '../**/*.{html,js,svelte,ts}'),
+		'./node_modules/layerchart/**/*.{svelte,js}' // <--- Add this
 	],
 	theme: {
 		extend: {}
