@@ -1,7 +1,7 @@
 <script>
 	import { user } from '$lib/store/user.svelte';
 
-	import { Highlight, LineChart, pivotLonger, Spline, Tooltip } from 'layerchart';
+	import { Highlight, LineChart, pivotWider, Spline, Tooltip } from 'layerchart';
 	
 	import { format } from '@layerstack/utils';
 
@@ -544,7 +544,8 @@
 	];
 
 	 const keys = ['apples', 'bananas', 'oranges'];
-	const multiSeriesFlatData = pivotLonger(multiSeriesData, keys, 'fruit', 'value');
+	 
+	const multiSeriesWideData = pivotWider(multiSeriesData, 'date', 'fruit', 'value');
 
 	
 </script>
@@ -763,7 +764,7 @@
 
 <div class="h-[300px] rounded border p-4">
 	<LineChart
-		data={multiSeriesFlatData}
+		data={multiSeriesData}
 		x="date"
 		y="value"
 		series={[
@@ -779,7 +780,7 @@
 					tooltip.data == null || tooltip.data.fruit === s.key
 						? s.color
 						: 'hsl(var(--color-surface-content) / 20%)'}
-				<Spline data={multiSeriesData} y={s.key} class="stroke-2" stroke={color} />
+				<Spline data={multiSeriesWideData} y={s.key} class="stroke-2" stroke={color} />
 			{/each}
 		</svelte:fragment>
 
