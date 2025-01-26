@@ -543,8 +543,6 @@
 		}
 	];
 
-	 const keys = ['apples', 'bananas', 'oranges'];
-	 
 	const multiSeriesWideData = pivotWider(multiSeriesData, 'date', 'fruit', 'value');
 
 	
@@ -768,9 +766,9 @@
 		x="date"
 		y="value"
 		series={[
-			{ key: 'apples', color: 'hsl(var(--color-danger))' },
-			{ key: 'bananas', color: 'hsl(var(--color-success))' },
-			{ key: 'oranges', color: 'hsl(var(--color-warning))' }
+			{ key: 'apples', color: 'hsl(var(--color-error-500))' },
+			{ key: 'bananas', color: 'hsl(var(--color-success-500))' },
+			{ key: 'oranges', color: 'hsl(var(--color-warning-500))' }
 		]}
 		tooltip={{ mode: 'voronoi' }}
 	>
@@ -779,7 +777,7 @@
 				{@const color =
 					tooltip.data == null || tooltip.data.fruit === s.key
 						? s.color
-						: 'hsl(var(--color-surface-content) / 20%)'}
+						: 'hsl(0 0 50 / 20%)'}
 				<Spline data={multiSeriesWideData} y={s.key} class="stroke-2" stroke={color} />
 			{/each}
 		</svelte:fragment>
