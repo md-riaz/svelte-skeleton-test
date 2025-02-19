@@ -1,3 +1,6 @@
+// https://kit.svelte.dev/docs/service-workers#type-safety
+const sw = self as unknown as ServiceWorkerGlobalScope;
+
 /// <reference types="@sveltejs/kit" />
 import { build, files, version } from '$service-worker';
 
@@ -11,23 +14,38 @@ const ASSETS = [
 
 self.addEventListener('install', (event) => {
     // Create a new cache and add all files to it
-    async function addFilesToCache() {
+    async function addFilesToCacheAndSkipWaiting() {
         const cache = await caches.open(CACHE);
-        await cache.addAll(ASSETS);
+        try {
+            await cache.addAll(ASSETS);
+            await sw.skipWaiting();
+        }
+        catch (error) {
+            console.error('Failed to cache:', error);
+            for (const asset of ASSETS) {
+                try {
+                    await cache.add(asset);
+                } catch (e) {
+                    console.error('Failed to cache asset:', asset, e);
+                }
+            }
+        }
     }
 
-    event.waitUntil(addFilesToCache());
+    event.waitUntil(addFilesToCacheAndSkipWaiting());
 });
 
 self.addEventListener('activate', (event) => {
     // Remove previous cached data from disk
-    async function deleteOldCaches() {
-        for (const key of await caches.keys()) {
-            if (key !== CACHE) await caches.delete(key);
-        }
-    }
+	async function deleteOldCachesAndClaimClients() {
+		for (const key of await caches.keys()) {
+			if (key !== CACHE) await caches.delete(key);
+		}
 
-    event.waitUntil(deleteOldCaches());
+		await sw.clients.claim();
+	}
+
+	event.waitUntil(deleteOldCachesAndClaimClients());
 });
 
 self.addEventListener('fetch', (event) => {
@@ -82,4 +100,25 @@ self.addEventListener('fetch', (event) => {
     }
 
     event.respondWith(respond());
+});
+
+self.addEventListener('push', function (event) {
+	try {
+		const payload = event.data
+			? event.data.json()
+			: { title: 'Appreciation Jar', body: 'There is new content in your Appreciation Jar!' }; // Basically a fallback message in case something goes wrong
+
+		if (payload) {
+			const { title, ...options } = payload;
+
+			event.waitUntil(sw.registration.showNotification(title, options));
+		} else {
+			console.warn('No payload for push event', event);
+		}
+
+		// TODO: We can also implement analytics for received pushes as well if we want:
+		// https://web.dev/push-notifications-handling-messages/#wait-until
+	} catch (e) {
+		console.warn('Malformed notification', e);
+	}
 });
