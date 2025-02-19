@@ -108,7 +108,7 @@ self.addEventListener('push', function (event) {
 		if (payload) {
 			const { title, ...options } = payload;
 
-			event.waitUntil(sw.registration.showNotification(title, options));
+			event.waitUntil(self.registration.showNotification(title, options));
 		} else {
 			console.warn('No payload for push event', event);
 		}
