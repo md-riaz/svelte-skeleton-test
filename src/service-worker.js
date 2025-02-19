@@ -1,6 +1,3 @@
-// https://kit.svelte.dev/docs/service-workers#type-safety
-const sw = self as unknown as ServiceWorkerGlobalScope;
-
 /// <reference types="@sveltejs/kit" />
 import { build, files, version } from '$service-worker';
 
@@ -18,7 +15,7 @@ self.addEventListener('install', (event) => {
         const cache = await caches.open(CACHE);
         try {
             await cache.addAll(ASSETS);
-            await sw.skipWaiting();
+            await self.skipWaiting();
         }
         catch (error) {
             console.error('Failed to cache:', error);
@@ -41,10 +38,10 @@ self.addEventListener('activate', (event) => {
 		for (const key of await caches.keys()) {
 			if (key !== CACHE) await caches.delete(key);
 		}
-
+	
 		await sw.clients.claim();
 	}
-
+	
 	event.waitUntil(deleteOldCachesAndClaimClients());
 });
 
