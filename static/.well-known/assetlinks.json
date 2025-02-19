@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "app.netlify.ipbxt.twa",
-        "sha256_cert_fingerprints": ["CD:05:F1:9E:AD:64:A3:61:6A:44:49:65:92:2A:D1:C9:37:96:A6:B8:A2:A4:0F:53:DE:D1:7E:22:DE:82:62:19"]
+        "sha256_cert_fingerprints": ["38:21:79:5F:41:9D:D8:63:88:5E:0C:CE:A1:DD:41:49:85:FF:CA:9D:7F:2E:AE:FD:27:0C:D1:83:12:99:D2:4B"]
       }
     }]
