@@ -24,14 +24,12 @@
 		if ('serviceWorker' in navigator) {
 			// Service worker supported
 
-			// check if the notification permission already exists
-			if (Notification.permission == 'granted') {
-				const status = await Notification.requestPermission();
+			// request notification permission
+			const status = await Notification.requestPermission();
 
-				if (status !== 'granted') {
-					alert('Please allow notifications to make sure that the application works.');
-				}
-
+			if (status !== 'granted') {
+				alert('Please allow notifications to make sure that the application works.');
+			} else {
 				const reg = await navigator.serviceWorker.ready;
 				let sub = await reg.pushManager.getSubscription();
 				if (!sub) {
