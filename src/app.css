@@ -7,12 +7,12 @@ body {
     --theme-color-surface-100: var(--color-surface-50);
     --theme-color-surface-200: var(--color-surface-100);
     --theme-color-surface-300: var(--color-surface-200);
-    --theme-color-surface-content: var(--theme-font-color-base);
+    --theme-color-surface-content: var(--base-font-color);
 
-    html.dark & {
+    @media (prefers-color-scheme: dark) {
         --theme-color-surface-100: var(--color-surface-700);
         --theme-color-surface-200: var(--color-surface-800);
         --theme-color-surface-300: var(--color-surface-900);
-        --theme-color-surface-content: var(--theme-font-color-dark);
+        --theme-color-surface-content: var(--base-font-color-dark);
     }
 }
