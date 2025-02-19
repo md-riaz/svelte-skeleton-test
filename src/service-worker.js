@@ -39,7 +39,7 @@ self.addEventListener('activate', (event) => {
 			if (key !== CACHE) await caches.delete(key);
 		}
 	
-		await sw.clients.claim();
+		await self.clients.claim();
 	}
 	
 	event.waitUntil(deleteOldCachesAndClaimClients());
