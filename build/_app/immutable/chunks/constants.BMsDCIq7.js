@@ -1,0 +1,1 @@
+const s={APP_NAME:"IPBX SMS",BASE_API_URI:"https://api.dev.ipbx.link"},i="BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo",t={LOGIN:"/user/login",LOGOUT:"/user/logout",POLICIES:"/user/policies",DASHBOARD:"/dashboard",ADD_PUSH_SUBSCRIPTION:"/user/Notification/addSubscription"};export{t as A,i as s,s as v};

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="manifest" href="/manifest.json" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link rel="modulepreload" href="/_app/immutable/entry/start.CfeIjisH.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/entry.BTTsi4hx.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/runtime.BR6g6J_c.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/utils.DeeHjLpD.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index-client.DKH2INGl.js">
+		<link rel="modulepreload" href="/_app/immutable/entry/app.CxgArp3a.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/render.D5nJIJxX.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/template.BP1--SxR.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/disclose-version.Bg9kRutz.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/if.DGIIoMx7.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/this.Cm9frVP7.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/proxy.nd9q0MFQ.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/props.Mz8E5OJK.js">
+	</head>
+	<body data-sveltekit-preload-data="hover" data-theme="cerberus">
+		<div style="display: contents">
+			<script>
+				{
+					__sveltekit_1da3hkh = {
+						base: ""
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/_app/immutable/entry/start.CfeIjisH.js"),
+						import("/_app/immutable/entry/app.CxgArp3a.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+
+					if ('serviceWorker' in navigator) {
+						addEventListener('load', function () {
+							navigator.serviceWorker.register('/service-worker.js');
+						});
+					}
+				}
+			</script>
+		</div>
+	</body>
+</html>

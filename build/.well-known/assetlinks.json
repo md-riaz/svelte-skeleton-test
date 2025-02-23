@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.netlify.ipbxt.twa",
+        "sha256_cert_fingerprints": ["CD:05:F1:9E:AD:64:A3:61:6A:44:49:65:92:2A:D1:C9:37:96:A6:B8:A2:A4:0F:53:DE:D1:7E:22:DE:82:62:19"]
+      }
+    }]
